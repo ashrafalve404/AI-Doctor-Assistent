@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI চালিত স্বাস্থ্য পরামর্শ সিস্টেম">
+  <meta name="theme-color" content="#0d9488">
+  <title>AI ডাক্তার সহায়ক</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d9488' stroke-width='2'><path d='M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z'/></svg>">
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">
+    <div class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+    </div>
+    <span>AI ডাক্তার</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="active">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      পরামর্শ
+    </a>
+    <a href="history.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      ইতিহাস
+    </a>
+    <a href="profiles.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      প্রোফাইল
+    </a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="page-header">
+    <h1>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:inline;vertical-align:middle;margin-right:10px;color:var(--primary)"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      AI ডাক্তার সহায়ক
+    </h1>
+    <p>আপনার লক্ষণ বলুন — ডাক্তার  AI  আপনাকে পরামর্শ দেবে</p>
+  </div>
+
+  <div class="disclaimer">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <span><strong>গুরুত্বপূর্ণ:</strong> এই টুলটি AI-ভিত্তিক প্রাথমিক পরামর্শের জন্য। এটি একজন প্রকৃত ডাক্তারের বিকল্প নয়। গুরুতর অসুস্থতায় অবশ্যই ডাক্তারের পরামর্শ নিন।</span>
+  </div>
+
+  <!-- Profile Select -->
+  <div class="card" style="margin-top: 24px">
+    <div class="card-title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      কার জন্য পরামর্শ নিচ্ছেন?
+    </div>
+    <div id="profileList">
+      <div class="loading"><div class="spinner"></div> লোড হচ্ছে...</div>
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-outline btn-sm" onclick="openAddProfile()">+ নতুন প্রোফাইল যোগ করুন</button>
+    </div>
+  </div>
+
+  <!-- Symptom Input -->
+  <div class="card" id="symptomCard" class="hidden">
+    <div class="card-title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      লক্ষণ বলুন
+    </div>
+    <div class="form-group">
+      <label>আপনার লক্ষণ বাংলা বা ইংরেজিতে লিখুন</label>
+      <textarea id="symptomInput" placeholder="যেমন: মাথাব্যথা, জ্বর ১০২, গলা ব্যথা, ৩ দিন ধরে...&#10;অথবা: Headache, fever 102, sore throat for 3 days..." rows="4"></textarea>
+    </div>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap">
+      <button class="btn btn-primary" onclick="analyzeSymptoms()" id="analyzeBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        AI পরামর্শ নিন
+      </button>
+      <button class="btn btn-outline" onclick="clearForm()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        পরিষ্কার করুন
+      </button>
+    </div>
+
+    <!-- Quick Symptom Tags -->
+    <div class="mt-4">
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px; font-weight: 500;">দ্রুত যোগ করুন:</div>
+      <div class="symptom-tags">
+        <span class="symptom-tag" onclick="addTag('জ্বর')">জ্বর</span>
+        <span class="symptom-tag" onclick="addTag('মাথাব্যথা')">মাথাব্যথা</span>
+        <span class="symptom-tag" onclick="addTag('বুকে ব্যথা')">বুকে ব্যথা</span>
+        <span class="symptom-tag" onclick="addTag('পেটে ব্যথা')">পেটে ব্যথা</span>
+        <span class="symptom-tag" onclick="addTag('শ্বাসকষ্ট')">শ্বাসকষ্ট</span>
+        <span class="symptom-tag" onclick="addTag('বমি বমি ভাব')">বমি বমি ভাব</span>
+        <span class="symptom-tag" onclick="addTag('কাশি')">কাশি</span>
+        <span class="symptom-tag" onclick="addTag('দুর্বলতা')">দুর্বলতা</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Response -->
+  <div class="card" id="responseCard" class="hidden">
+    <div class="card-title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      AI পরামর্শ
+    </div>
+    <div id="urgencyBar"></div>
+    <div class="ai-response" id="aiResponse"></div>
+
+    <!-- Follow-up Chat -->
+    <div style="margin-top: 28px; border-top: 1px solid var(--border-light); padding-top: 24px">
+      <div class="card-title" style="margin-bottom: 16px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        আরো জিজ্ঞেস করুন
+      </div>
+      <div class="chat-container" id="chatContainer"></div>
+      <div class="chat-input-row">
+        <textarea id="chatInput" placeholder="প্রশ্ন করুন..." rows="1" onkeydown="chatKeydown(event)"></textarea>
+        <button class="btn btn-primary" onclick="sendChat()" id="chatBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Add Profile Modal -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <div class="modal-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:8px"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      নতুন প্রোফাইল যোগ করুন
+    </div>
+    <div class="form-group">
+      <label>নাম *</label>
+      <input type="text" id="pName" placeholder="যেমন: রহিম, মা, বাবা...">
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>বয়স</label>
+        <input type="number" id="pAge" placeholder="বছর" min="0" max="120">
+      </div>
+      <div class="form-group">
+        <label>লিঙ্গ</label>
+        <select id="pGender">
+          <option value="">নির্বাচন করুন</option>
+          <option value="পুরুষ">পুরুষ</option>
+          <option value="মহিলা">মহিলা</option>
+          <option value="অন্যান্য">অন্যান্য</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>রক্তের গ্রুপ</label>
+      <select id="pBlood">
+        <option value="">জানা নেই</option>
+        <option>A+</option><option>A-</option>
+        <option>B+</option><option>B-</option>
+        <option>AB+</option><option>AB-</option>
+        <option>O+</option><option>O-</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">বাতিল</button>
+      <button class="btn btn-primary" onclick="saveProfile()">✅ সংরক্ষণ করুন</button>
+    </div>
+  </div>
+</div>
+
+<style>
+.symptom-tag {
+  display: inline-block;
+  padding: 5px 12px;
+  background: var(--green-pale);
+  color: var(--green);
+  border-radius: 100px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+.symptom-tag:hover { background: var(--green); color: white; }
+</style>
+
+<script>
+const API = 'http://localhost:8080/api';
+let selectedProfileId = null;
+let currentConsultationId = null;
+
+// Load profiles
+async function loadProfiles() {
+  const res = await fetch(`${API}/profiles`);
+  const profiles = await res.json();
+  const container = document.getElementById('profileList');
+
+  if (!profiles || profiles.length === 0) {
+    container.innerHTML = `<div class="empty-state" style="padding:20px"><div class="icon">👤</div><p>কোনো প্রোফাইল নেই। নতুন যোগ করুন।</p></div>`;
+    return;
+  }
+
+  container.innerHTML = profiles.map(p => `
+    <div class="profile-card ${selectedProfileId === p.id ? 'selected' : ''}" 
+         onclick="selectProfile(${p.id})" id="profile-${p.id}" style="margin-bottom:10px">
+      <div class="profile-info">
+        <div class="profile-avatar">${p.name[0]}</div>
+        <div>
+          <div class="profile-name">${p.name}</div>
+          <div class="profile-meta">${p.age ? p.age + ' বছর' : ''} ${p.gender ? '· ' + p.gender : ''} ${p.blood_group ? '· ' + p.blood_group : ''}</div>
+        </div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteProfile(event, ${p.id})">🗑️</button>
+    </div>
+  `).join('');
+}
+
+function selectProfile(id) {
+  selectedProfileId = id;
+  document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('profile-' + id)?.classList.add('selected');
+  document.getElementById('symptomCard').style.display = 'block';
+  document.getElementById('responseCard').style.display = 'none';
+  window.scrollTo({ top: document.getElementById('symptomCard').offsetTop - 80, behavior: 'smooth' });
+}
+
+function addTag(text) {
+  const input = document.getElementById('symptomInput');
+  input.value = input.value ? input.value + ', ' + text : text;
+  input.focus();
+}
+
+function clearForm() {
+  document.getElementById('symptomInput').value = '';
+  document.getElementById('responseCard').style.display = 'none';
+}
+
+async function analyzeSymptoms() {
+  if (!selectedProfileId) { showToast('প্রথমে একটি প্রোফাইল নির্বাচন করুন'); return; }
+  const symptoms = document.getElementById('symptomInput').value.trim();
+  if (!symptoms) { showToast('লক্ষণ লিখুন'); return; }
+
+  const btn = document.getElementById('analyzeBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> বিশ্লেষণ করছে...';
+
+  try {
+    const res = await fetch(`${API}/analyze`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profile_id: selectedProfileId, symptoms })
+    });
+
+    const data = await res.json();
+    currentConsultationId = data.consultation_id;
+
+    // Show urgency bar
+    const urgencyMap = {
+      emergency: { cls: 'urgency-emergency', icon: '🔴', text: 'এখনই ডাক্তারের কাছে যান!' },
+      caution: { cls: 'urgency-caution', icon: '🟡', text: '২৪-৪৮ ঘন্টার মধ্যে ডাক্তার দেখান' },
+      normal: { cls: 'urgency-normal', icon: '🟢', text: 'সাধারণ অবস্থা — ঘরে যত্ন নিন' }
+    };
+    const u = urgencyMap[data.urgency] || urgencyMap.normal;
+    document.getElementById('urgencyBar').innerHTML = `<div class="urgency-bar ${u.cls}">${u.icon} ${u.text}</div>`;
+    document.getElementById('aiResponse').textContent = data.response;
+    document.getElementById('chatContainer').innerHTML = '';
+    document.getElementById('responseCard').style.display = 'block';
+    document.getElementById('responseCard').classList.add('fade-in');
+    window.scrollTo({ top: document.getElementById('responseCard').offsetTop - 80, behavior: 'smooth' });
+
+  } catch(e) {
+    showToast('❌ সার্ভারে সংযোগ ব্যর্থ হয়েছে');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🔍 AI পরামর্শ নিন';
+  }
+}
+
+async function sendChat() {
+  if (!currentConsultationId) return;
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  appendChatMsg('user', msg);
+  input.value = '';
+
+  const btn = document.getElementById('chatBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="dots"><span></span><span></span><span></span></div>';
+
+  appendTyping();
+
+  try {
+    const res = await fetch(`${API}/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ consultation_id: currentConsultationId, message: msg })
+    });
+    const data = await res.json();
+    removeTyping();
+    appendChatMsg('assistant', data.response);
+  } catch(e) {
+    removeTyping();
+    showToast('❌ সার্ভার error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'পাঠান';
+  }
+}
+
+function chatKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+}
+
+function appendChatMsg(role, content) {
+  const container = document.getElementById('chatContainer');
+  const div = document.createElement('div');
+  div.className = `chat-msg ${role}`;
+  div.innerHTML = `
+    <div class="chat-avatar">${role === 'user' ? '👤' : '🤖'}</div>
+    <div class="chat-bubble">${content}</div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function appendTyping() {
+  const container = document.getElementById('chatContainer');
+  const div = document.createElement('div');
+  div.className = 'chat-msg assistant';
+  div.id = 'typing-indicator';
+  div.innerHTML = `<div class="chat-avatar">🤖</div><div class="chat-bubble"><div class="dots"><span></span><span></span><span></span></div></div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function removeTyping() {
+  document.getElementById('typing-indicator')?.remove();
+}
+
+// Profile modal
+function openAddProfile() { document.getElementById('profileModal').classList.add('open'); }
+function closeModal() { document.getElementById('profileModal').classList.remove('open'); }
+
+async function saveProfile() {
+  const name = document.getElementById('pName').value.trim();
+  if (!name) { showToast('নাম দিন'); return; }
+
+  await fetch(`${API}/profiles`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name,
+      age: parseInt(document.getElementById('pAge').value) || 0,
+      gender: document.getElementById('pGender').value,
+      blood_group: document.getElementById('pBlood').value
+    })
+  });
+
+  closeModal();
+  document.getElementById('pName').value = '';
+  document.getElementById('pAge').value = '';
+  loadProfiles();
+  showToast('✅ প্রোফাইল যোগ হয়েছে');
+}
+
+async function deleteProfile(e, id) {
+  e.stopPropagation();
+  if (!confirm('এই প্রোফাইল মুছে ফেলবেন?')) return;
+  await fetch(`${API}/profiles/${id}`, { method: 'DELETE' });
+  if (selectedProfileId === id) {
+    selectedProfileId = null;
+    document.getElementById('symptomCard').style.display = 'none';
+    document.getElementById('responseCard').style.display = 'none';
+  }
+  loadProfiles();
+  showToast('🗑️ মুছে ফেলা হয়েছে');
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+loadProfiles();
+</script>
+
+</body>
+</html>

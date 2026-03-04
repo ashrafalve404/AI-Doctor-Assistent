@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>প্রোফাইল — AI ডাক্তার</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">
+    <div class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+    </div>
+    <span>AI ডাক্তার</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      পরামর্শ
+    </a>
+    <a href="history.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      ইতিহাস
+    </a>
+    <a href="profiles.html" class="active">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      প্রোফাইল
+    </a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <h1>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 8px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      পারিবারিক প্রোফাইল
+    </h1>
+    <p>পরিবারের প্রতিটি সদস্যের আলাদা স্বাস্থ্য প্রোফাইল রাখুন</p>
+  </div>
+
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
+      <div class="card-title" style="margin-bottom:0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        সব প্রোফাইল
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="openModal()">+ নতুন প্রোফাইল</button>
+    </div>
+    <div id="profileList">
+      <div class="loading"><div class="spinner"></div> লোড হচ্ছে...</div>
+    </div>
+  </div>
+
+  <!-- Info Card -->
+  <div class="card" style="background: var(--primary-subtle); border-color: var(--primary-light)">
+    <div class="card-title" style="color: var(--primary-dark)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+      টিপস
+    </div>
+    <ul style="list-style:none; display:flex; flex-direction:column; gap:10px; font-size:14px; color:var(--text-secondary)">
+      <li><span style="color: var(--success)">✓</span> পরিবারের প্রতিটি সদস্যের জন্য আলাদা প্রোফাইল রাখুন</li>
+      <li><span style="color: var(--success)">✓</span> বয়স ও রক্তের গ্রুপ দিলে AI আরো ভালো পরামর্শ দিতে পারে</li>
+      <li><span style="color: var(--success)">✓</span> প্রতিটি পরামর্শের ইতিহাস প্রোফাইলে সংরক্ষিত থাকে</li>
+      <li><span style="color: var(--warning)">⚠</span> ব্যক্তিগত তথ্য শুধুমাত্র আপনার ডিভাইসে সংরক্ষিত থাকে</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <div class="modal-title">👤 নতুন প্রোফাইল যোগ করুন</div>
+    <div class="form-group">
+      <label>নাম *</label>
+      <input type="text" id="pName" placeholder="যেমন: রহিম, আম্মু, বাবা, ছোট ভাই...">
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>বয়স</label>
+        <input type="number" id="pAge" placeholder="বছর" min="0" max="120">
+      </div>
+      <div class="form-group">
+        <label>লিঙ্গ</label>
+        <select id="pGender">
+          <option value="">নির্বাচন করুন</option>
+          <option value="পুরুষ">পুরুষ</option>
+          <option value="মহিলা">মহিলা</option>
+          <option value="অন্যান্য">অন্যান্য</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>রক্তের গ্রুপ</label>
+      <select id="pBlood">
+        <option value="">জানা নেই</option>
+        <option>A+</option><option>A-</option>
+        <option>B+</option><option>B-</option>
+        <option>AB+</option><option>AB-</option>
+        <option>O+</option><option>O-</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">বাতিল</button>
+      <button class="btn btn-primary" onclick="saveProfile()">✅ সংরক্ষণ করুন</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:8080/api';
+
+const genderIcon = { 'পুরুষ': '👨', 'মহিলা': '👩', 'অন্যান্য': '🧑' };
+
+async function loadProfiles() {
+  const res = await fetch(`${API}/profiles`);
+  const profiles = await res.json();
+  const container = document.getElementById('profileList');
+
+  if (!profiles || profiles.length === 0) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">👥</div><p>কোনো প্রোফাইল নেই। এখনই যোগ করুন!</p></div>`;
+    return;
+  }
+
+  container.innerHTML = `<div style="display:flex; flex-direction:column; gap:12px">${
+    profiles.map(p => `
+      <div class="profile-card" style="cursor:default">
+        <div class="profile-info">
+          <div class="profile-avatar" style="background:var(--green); font-size:20px">
+            ${genderIcon[p.gender] || '👤'}
+          </div>
+          <div>
+            <div class="profile-name">${p.name}</div>
+            <div class="profile-meta">
+              ${p.age ? '🎂 ' + p.age + ' বছর' : ''}
+              ${p.gender ? ' · ' + p.gender : ''}
+              ${p.blood_group ? ' · 🩸 ' + p.blood_group : ''}
+            </div>
+            <div style="margin-top:6px">
+              <a href="index.html" onclick="sessionStorage.setItem('autoProfile', ${p.id})" 
+                 style="font-size:13px; color:var(--green); text-decoration:none; font-weight:600">
+                🩺 পরামর্শ নিন →
+              </a>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="deleteProfile(${p.id})">🗑️ মুছুন</button>
+      </div>
+    `).join('')
+  }</div>`;
+}
+
+function openModal() { document.getElementById('profileModal').classList.add('open'); }
+function closeModal() { document.getElementById('profileModal').classList.remove('open'); }
+
+async function saveProfile() {
+  const name = document.getElementById('pName').value.trim();
+  if (!name) { showToast('নাম দিন'); return; }
+
+  await fetch(`${API}/profiles`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name,
+      age: parseInt(document.getElementById('pAge').value) || 0,
+      gender: document.getElementById('pGender').value,
+      blood_group: document.getElementById('pBlood').value
+    })
+  });
+
+  closeModal();
+  ['pName','pAge'].forEach(id => document.getElementById(id).value = '');
+  loadProfiles();
+  showToast('✅ প্রোফাইল যোগ হয়েছে');
+}
+
+async function deleteProfile(id) {
+  if (!confirm('এই প্রোফাইল এবং সমস্ত পরামর্শের ইতিহাস মুছে ফেলবেন?')) return;
+  await fetch(`${API}/profiles/${id}`, { method: 'DELETE' });
+  loadProfiles();
+  showToast('🗑️ মুছে ফেলা হয়েছে');
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+loadProfiles();
+</script>
+
+</body>
+</html>

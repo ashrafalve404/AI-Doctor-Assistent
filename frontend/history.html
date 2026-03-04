@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পরামর্শের ইতিহাস — AI ডাক্তার</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">
+    <div class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+    </div>
+    <span>AI ডাক্তার</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      পরামর্শ
+    </a>
+    <a href="history.html" class="active">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      ইতিহাস
+    </a>
+    <a href="profiles.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      প্রোফাইল
+    </a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <h1>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 8px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+      পরামর্শের ইতিহাস
+    </h1>
+    <p>আগের সব AI পরামর্শ দেখুন</p>
+  </div>
+
+  <!-- Profile Filter -->
+  <div class="card">
+    <div class="card-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      প্রোফাইল বেছে নিন
+    </div>
+    <div id="profileFilter" style="display:flex; flex-wrap:wrap; gap:10px">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  <!-- History List -->
+  <div id="historyContainer">
+    <div class="card">
+      <div class="empty-state">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <p>একটি প্রোফাইল নির্বাচন করুন</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal" style="max-width:680px; max-height:90vh; overflow-y:auto">
+      <div class="modal-title" id="detailTitle">পরামর্শের বিবরণ</div>
+      <div id="detailUrgency" style="margin-bottom:14px"></div>
+      <div style="margin-bottom:14px">
+        <label style="margin-bottom:6px; display:block">লক্ষণ:</label>
+        <div id="detailSymptoms" style="background:var(--bg); padding:12px; border-radius:var(--radius-sm); border:1.5px solid var(--border)"></div>
+      </div>
+      <div>
+        <label style="margin-bottom:6px; display:block">AI পরামর্শ:</label>
+        <div class="ai-response" id="detailResponse"></div>
+      </div>
+
+      <!-- Chat history -->
+      <div id="detailChatSection" style="margin-top:20px; border-top:1.5px solid var(--border); padding-top:16px; display:none">
+        <div class="card-title" style="margin-bottom:12px">💬 Chat ইতিহাস</div>
+        <div id="detailChatHistory" style="max-height:300px; overflow-y:auto; background:var(--bg); border-radius:var(--radius-sm); padding:12px; border:1.5px solid var(--border)"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeDetail()">বন্ধ করুন</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:8080/api';
+let selectedProfileId = null;
+
+async function loadProfileFilter() {
+  const res = await fetch(`${API}/profiles`);
+  const profiles = await res.json();
+  const container = document.getElementById('profileFilter');
+
+  if (!profiles || profiles.length === 0) {
+    container.innerHTML = '<p style="color:var(--text-muted); font-size:14px">কোনো প্রোফাইল নেই। <a href="index.html">যোগ করুন</a></p>';
+    return;
+  }
+
+  container.innerHTML = profiles.map(p => `
+    <button class="btn btn-outline btn-sm profile-filter-btn" id="pfbtn-${p.id}" onclick="loadHistory(${p.id})">
+      ${p.name[0]} ${p.name}
+    </button>
+  `).join('');
+}
+
+async function loadHistory(profileId) {
+  selectedProfileId = profileId;
+
+  document.querySelectorAll('.profile-filter-btn').forEach(b => {
+    b.className = 'btn btn-outline btn-sm profile-filter-btn';
+  });
+  const activeBtn = document.getElementById('pfbtn-' + profileId);
+  if (activeBtn) activeBtn.className = 'btn btn-primary btn-sm profile-filter-btn';
+
+  document.getElementById('historyContainer').innerHTML = '<div class="loading"><div class="spinner"></div> লোড হচ্ছে...</div>';
+
+  const res = await fetch(`${API}/history/${profileId}`);
+  const consultations = await res.json();
+
+  if (!consultations || consultations.length === 0) {
+    document.getElementById('historyContainer').innerHTML = `
+      <div class="card">
+        <div class="empty-state"><div class="icon">📭</div><p>এই প্রোফাইলের কোনো ইতিহাস নেই।</p></div>
+      </div>`;
+    return;
+  }
+
+  const urgencyLabel = { normal: '🟢 স্বাভাবিক', caution: '🟡 সাবধান', emergency: '🔴 জরুরি' };
+
+  document.getElementById('historyContainer').innerHTML = `
+    <div style="margin-bottom:12px; color:var(--text-muted); font-size:14px">${consultations.length}টি পরামর্শ পাওয়া গেছে</div>
+    ${consultations.map(c => `
+      <div class="history-item fade-in" onclick="showDetail(${c.id}, '${escapeStr(c.symptoms)}', '${escapeStr(c.ai_response)}', '${c.urgency}', '${c.created_at}')">
+        <div style="display:flex; justify-content:space-between; align-items:center">
+          <div class="history-date">📅 ${formatDate(c.created_at)}</div>
+          <span class="badge badge-${c.urgency || 'normal'}">${urgencyLabel[c.urgency] || '🟢 স্বাভাবিক'}</span>
+        </div>
+        <div class="history-symptom">🤒 ${c.symptoms.substring(0, 80)}${c.symptoms.length > 80 ? '...' : ''}</div>
+        <div class="history-preview">${c.ai_response.substring(0, 100)}...</div>
+      </div>
+    `).join('')}
+  `;
+}
+
+async function showDetail(id, symptoms, response, urgency, date) {
+  document.getElementById('detailTitle').textContent = '📋 ' + formatDate(date);
+  document.getElementById('detailSymptoms').textContent = symptoms;
+  document.getElementById('detailResponse').textContent = response;
+
+  const urgencyMap = {
+    emergency: { cls: 'urgency-emergency', icon: '🔴', text: 'জরুরি অবস্থা' },
+    caution: { cls: 'urgency-caution', icon: '🟡', text: 'সতর্কতা প্রয়োজন' },
+    normal: { cls: 'urgency-normal', icon: '🟢', text: 'স্বাভাবিক অবস্থা' }
+  };
+  const u = urgencyMap[urgency] || urgencyMap.normal;
+  document.getElementById('detailUrgency').innerHTML = `<div class="urgency-bar ${u.cls}">${u.icon} ${u.text}</div>`;
+
+  // Load chat messages
+  try {
+    const res = await fetch(`${API}/messages/${id}`);
+    const messages = await res.json();
+    const chatMsgs = messages.filter(m => !(m.role === 'user' && messages.indexOf(m) === 0));
+
+    if (chatMsgs.length > 2) {
+      document.getElementById('detailChatSection').style.display = 'block';
+      document.getElementById('detailChatHistory').innerHTML = chatMsgs.slice(2).map(m => `
+        <div class="chat-msg ${m.role}" style="margin-bottom:10px">
+          <div class="chat-avatar">${m.role === 'user' ? '👤' : '🤖'}</div>
+          <div class="chat-bubble">${m.content}</div>
+        </div>
+      `).join('');
+    } else {
+      document.getElementById('detailChatSection').style.display = 'none';
+    }
+  } catch(e) {}
+
+  document.getElementById('detailModal').classList.add('open');
+}
+
+function closeDetail() { document.getElementById('detailModal').classList.remove('open'); }
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+function escapeStr(str) {
+  return (str || '').replace(/'/g, "\\'").replace(/\n/g, ' ').substring(0, 200);
+}
+
+loadProfileFilter();
+</script>
+
+</body>
+</html>
